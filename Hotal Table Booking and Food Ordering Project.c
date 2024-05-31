@@ -13,6 +13,7 @@ typedef struct
 } MenuItem;
 
 //Functions
+// Functions
 void signup();
 void login();
 void menu();
@@ -21,6 +22,9 @@ void displayMenu(MenuItem menu[], int size, const char *category);
 void selectCategoryAndOrder(MenuItem menu[], int size);
 void reserveTable();
 void collectReview();
+void get_Feedback();
+void contact_details();
+void takepassword(char password[20]);
 
 //Global Variables
 int found1;
@@ -132,7 +136,7 @@ void signup()
     }
     fclose(file);
     printf("\n\t\tEnter password: ");
-    scanf("%s", password);
+    takepassword(password);
     file = fopen("users.csv", "a");
     if (file == NULL) {
         printf("Could not open file %s for writing.\n", "users.csv");
@@ -150,7 +154,7 @@ void login()
     printf("\n\n\t\tEnter username: ");
     scanf("%s", username);
     printf("\n\t\tEnter password: ");
-    scanf("%s", password);
+    takepassword(password);
 
     FILE *file = fopen("users.csv", "r");
     if (file == NULL)
@@ -170,6 +174,37 @@ void login()
     }
     fclose(file);
 
+}
+
+//Take Password
+void takepassword(char password[20])
+{
+    int i=0;
+    char ch;
+    while(1)
+    {
+        ch = getch();
+        if(ch==13){
+            password[i]='\0';
+            break;
+        }
+        else if(ch==8)   //backspace
+        {
+            if(i>0)
+            {
+                i--;
+                printf("\b\b");
+            }
+        }
+        else if(ch==9||ch==32){  //Space || Tab
+            continue;
+        }
+        else{
+            password[i++]=ch;
+            printf("*");
+        }
+    }
+    printf("\n");
 }
 
 //Reserve Table Function
@@ -244,7 +279,7 @@ void menuf()
         {9, "Sheer Kebab",265.00,"Starters"},
         {10,"VEG starters combo",465.00,"Starters"},
         {11,"Non Veg starters combo",565.00,"Starters"},
-        {12,"A.S.K special starters platter",865.00,"Starters"},
+        {12,"S.R.K special starters platter",865.00,"Starters"},
 
         {13, "Paneer Butter Masala", 200.00, "Main Course"},
         {14, "Kaju Butter Masala", 220.00, "Main Course"},
@@ -253,7 +288,7 @@ void menuf()
         {17, "Butter Chicken", 200.00, "Main Course"},
         {18, "Biryani(veg)", 180.00, "Main Course"},
         {19, " Hyderbad dum Biryani ", 200.00, "Main course"},
-        {20, "A.S.K special Biryani", 400.00, "Main course"},
+        {20, "S.R.K special Biryani", 400.00, "Main course"},
         {21, "Nalli ka Gosh Biryani ", 500.00, "Main course"},
         {22, "Mutton Briyani ", 300.00, "Main course"},
 
@@ -262,7 +297,7 @@ void menuf()
         {25, "Ras Malai", 35.50, "Desserts"},
         {26, "Double ka Meeta", 65.50, "Desserts"},
         {27, "Matka Kulfi ", 45.50, "Desserts"},
-        {28, "A.S.K SP Kheer", 75.50, "Desserts"},
+        {28, "S.R.K SP Kheer", 75.50, "Desserts"},
 
         {29, "Badam Kheer", 75.50, "Drinks"},
         {30, "Rose milk", 65.50, "Drinks"},
@@ -457,6 +492,7 @@ void collectReview()
     }
 }
 
+//Get Feedback
 void get_Feedback()
 {
             printf("\n\tPress Y/y to Feedback about this Services or Press any key to Exit: ");
