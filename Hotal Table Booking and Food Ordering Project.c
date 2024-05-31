@@ -12,7 +12,6 @@ typedef struct
     char category[20];
 } MenuItem;
 
-//Functions
 // Functions
 void signup();
 void login();
@@ -207,59 +206,78 @@ void takepassword(char password[20])
     printf("\n");
 }
 
-//Reserve Table Function
-void reserveTable()
-{
-
+// Reserve Table Function
+void reserveTable() {
 
     FILE *file = fopen("reserved.csv", "r");
-    if (file == NULL)
-    {
-        printf("Could not open file %s for reading.\n", "reserved.csv");
-    }
-    else
-    {
+    if (file != NULL) {
         printf("\n\n\tCurrently booked tables:\n\n");
         char line[256];
-        while (fgets(line, sizeof(line), file))
-        {
+        while (fgets(line, sizeof(line), file)) {
             printf("\t\t%s", line);
         }
         fclose(file);
     }
 
-    printf("\n\n\t\tEnter Your Name: ");
-    scanf("%s", name);
-    printf("\t\tEnter Table number (1 to 10): ");
-    scanf("%d", &tab_no);
-    printf("\t\tEnter Date and month (eg 20 may): ");
-    scanf("%d %s", &day, month);
-    printf("\t\tEnter Time (eg: 4 pm): ");
-    scanf("%d %s", &time, am_pm);
+    while (1) {
+        printf("\n\n\t\tEnter Your Name: ");
+        scanf("%s", name);
+        printf("\t\tEnter Table number (1 to 10): ");
+        scanf("%d", &tab_no);
+        printf("\t\tEnter Date and month (e.g., 20 May): ");
+        scanf("%d %s", &day, month);
+        printf("\t\tEnter Time (e.g., 4 PM): ");
+        scanf("%d %s", &time, am_pm);
+
+        // Validate time
+        if (time < 1 || time > 12 || (strcmp(am_pm, "AM") != 0 && strcmp(am_pm, "PM") != 0)) {
+            printf("\t\tInvalid time format. Please try again.\n");
+            continue;
+        }
+
+        // Check for duplicate reservations
+        int duplicate = 0;
+        file = fopen("reserved.csv", "r");
+        if (file != NULL) {
+            char file_line[256];
+            while (fgets(file_line, sizeof(file_line), file)) {
+                int file_tab_no, file_day, file_time;
+                char file_month[10], file_am_pm[10], file_name[20];
+                sscanf(file_line, "Table %d was successfully reserved for %d %s on %s %d by %s.\n",
+                       &file_tab_no, &file_time, file_am_pm, file_month, &file_day, file_name);
+                if (file_tab_no == tab_no && file_day == day && strcmp(strupr(file_month), strupr(month)) == 0 &&
+                    file_time == time && strcmp(strupr(file_am_pm), strupr(am_pm)) == 0) {
+                    duplicate = 1;
+                    break;
+                }
+            }
+            fclose(file);
+        }
+
+        if (duplicate) {
+            printf("\t\tThe table %d is already reserved for %d %s on %s %d. Please choose a different table or time.\n",
+                   tab_no, time, am_pm, month, day);
+        } else {
+            break;
+        }
+    }
 
     file = fopen("reserved.csv", "a");
-    if (file == NULL) {
-        printf("Could not open file %s for writing.\n", "reserved.csv");
+    if (file != NULL) {
+        fprintf(file, "Table %d was successfully reserved for %d %s on %s %d by %s.\n", tab_no, time, am_pm, strupr(month), day, name);
+        fclose(file);
+        printf("\tTable %d was successfully reserved for %d %s on %s %d by %s.\n", tab_no, time, am_pm,strupr(month), day, name);
     }
-    else
-    {
-    fprintf(file, "Table %d was successfully reserved for %d %s on %s %d by %s.\n", tab_no, time, am_pm, month, day, name);
-    fclose(file);
-    printf("\tTable %d was successfully reserved for %d %s on %s %d by %s.\n", tab_no, time, am_pm, month, day, name);
-    }
-    printf("\n\tPress Y/y to Order Food : ");
+
+    printf("\n\tPress Y/y to Order Food: ");
     char opt;
-            fflush(stdin);
-            opt=getch();
-            if(opt=='y'||opt=='Y')
-            {
-                 menuf();
-            }
-            else{
-                 get_Feedback();
-            }
-
-
+    fflush(stdin);
+    opt = getch();
+    if (opt == 'y' || opt == 'Y') {
+        menuf();
+    } else {
+        get_Feedback();
+    }
 }
 
 //Menu Function
@@ -304,8 +322,8 @@ void menuf()
         {31, "Sweet lassi", 55.50, "Drinks"},
         {32, "Lemonade", 45.50, "Drinks"},
         {33, "Body cooler", 55.50, "Drinks"},
-        {33, "Tender coconut water ", 55.50, "Drinks"},
-        {33, "Fresh Sugarcane Juice", 55.50, "Drinks"},
+        {34, "Tender coconut water ", 55.50, "Drinks"},
+        {35, "Fresh Sugarcane Juice", 55.50, "Drinks"},
     };
     int menuSize = sizeof(menu) / sizeof(menu[0]);
 
@@ -363,76 +381,53 @@ void displayMenu(MenuItem menu[], int size, const char *category)
     }
 }
 
-//Take Order Function
-void takeOrder(MenuItem menu[], int size, const char *category)
-{
-    int choice,quantity;
-    float total;
-    static float overalltotal;
+void takeOrder(MenuItem menu[], int size, const char *category) {
+    int choice, quantity;
+    float total = 0;
+    static float overalltotal = 0;
     char more;
 
     printf("\n\t--- Take Order from %s ---\n", category);
 
     do {
         displayMenu(menu, size, category);
-
         printf("\nEnter the item number to order: ");
         scanf("%d", &choice);
 
-
         int found = 0;
-        FILE *file5 = fopen("order.csv", "a");
-    if (file5 != NULL)
-    {
-        for (int i = 0; i < size; i++)
-        {
-            if (menu[i].id == choice && strcmp(menu[i].category, category) == 0)
-           {
-                found = 1;
-                printf("\nEnter the quantity: ");
-                scanf("%d", &quantity);
-                total += menu[i].price * quantity;
-                overalltotal+=total;
-                fprintf(file5,"%d,%s,%s,%s,%s,%.2f,%d,%.2f\n",tab_no,username,name,menu[i].category,menu[i].name,menu[i].price,
-               quantity,total);
-                break;
+        FILE *file = fopen("order.csv", "a");
+        if (file != NULL) {
+            for (int i = 0; i < size; i++) {
+                if (menu[i].id == choice && strcmp(menu[i].category, category) == 0) {
+                    found = 1;
+                    printf("\nEnter the quantity: ");
+                    scanf("%d", &quantity);
+                    total = menu[i].price * quantity;
+                    overalltotal += total;
+                    fprintf(file, "%d,%s,%s,%s,%s,%.2f,%d,%.2f\n", tab_no, username, name, menu[i].category, menu[i].name, menu[i].price, quantity, total);
+                    break;
+                }
             }
+            fclose(file);
         }
-    }
-    fclose(file5);
-    if (!found)
-    {
-        printf("Invalid item number. Please try again.\n");
-        continue;
-    }
-    printf("\nDo you want to order another item from %s? (y/n): ", category);
-    more=getch();
+        if (!found) {
+            printf("Invalid item number. Please try again.\n");
+            continue;
+        }
+        printf("\nDo you want to order another item from %s? (y/n): ", category);
+        more = getch();
+    } while (more == 'y' || more == 'Y');
 
-    }while (more == 'y' || more == 'Y');
-
-    printf("\nDo you want to order any another Category(y/n): ");
+    printf("\nDo you want to order another Category(y/n): ");
     char opt;
-
     fflush(stdin);
-    opt=getch();
-    if(opt=='y'||opt=='Y')
-    {
+    opt = getch();
+    if (opt == 'y' || opt == 'Y') {
         menuf();
+    } else {
+        printf("\n\nYour total bill for your Order is: %.2f Rs\n", overalltotal);
+        get_Feedback();
     }
-    printf("\n\n");
-    char a[15]={'(','L','o','a','d','i','n','g','.','.','.',')'};
-    for(int i =0;i<3;i++)
-    {
-        printf("\r--------------------- )\r");
-        for(int j=0;j<=11;j++){
-            printf("%c ",a[j]);
-            usleep(300000);
-        }
-
-    }
-
-    printf("\n\nYour total bill for your Order is: %.2f Rs\n", overalltotal);
-    get_Feedback();
 }
 
 
@@ -495,33 +490,33 @@ void collectReview()
 //Get Feedback
 void get_Feedback()
 {
-            printf("\n\tPress Y/y to Feedback about this Services or Press any key to Exit: ");
-            fflush(stdin);
-            opt=getch();
-            if(opt=='y'||opt=='Y')
-            {
-                collectReview();
-                printf("\n\n\t\tPress Y/y to View Contact Details : ");
-                fflush(stdin);
-                opt=getch();
-                if(opt=='y'||opt=='Y')
-                {
-                    contact_details();
-                }
+    printf("\n\tPress Y/y to Feedback about this Services or Press any key to Exit: ");
+    fflush(stdin);
+    opt=getch();
+    if(opt=='y'||opt=='Y')
+    {
+        collectReview();
+        printf("\n\n\t\tPress Y/y to View Contact Details : ");
+        fflush(stdin);
+        opt=getch();
+        if(opt=='y'||opt=='Y')
+        {
+            contact_details();
+        }
 
-            }
-            else
-            {
-                printf("\n\t\t\tPress Y/y to View Contact Details : ");
-                fflush(stdin);
-                opt=getch();
-                if(opt=='y'||opt=='Y')
-                {
-                    contact_details();
-                }
+    }
+    else
+    {
+        printf("\n\t\t\tPress Y/y to View Contact Details : ");
+        fflush(stdin);
+        opt=getch();
+        if(opt=='y'||opt=='Y')
+        {
+            contact_details();
+        }
 
-            }
-            exit(0);
+    }
+    exit(0);
 }
 
 //Contact Details Function
@@ -536,7 +531,7 @@ void contact_details()
     FILE *file = fopen("feedback.txt", "r");
     if (file == NULL)
     {
-        printf("Could not open file %s for reading.\n", "reserved.csv");
+        printf("Could not open file %s for reading.\n", "feedback.txt");
     }
     else
     {
