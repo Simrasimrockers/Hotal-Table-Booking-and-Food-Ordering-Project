@@ -49,7 +49,7 @@ int main()
     printf("\t\t|    |   |    |\n");
     printf("\t\t|-------------|\n");
 
-    printf("\n\n\t****** WELCOME TO ASK Grand ******\n\n");
+    printf("\n\n\t****** WELCOME TO SRK Grand ******\n\n");
     rtn:
     printf("\n\n\t\t+-++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+--\n");
         printf("\t\t+ \t\t         \t\t\t+\n\t\t+\t\t    MENU\t\t\t");
