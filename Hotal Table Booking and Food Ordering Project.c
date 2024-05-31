@@ -1,6 +1,9 @@
+//Header files
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+//Structure
 typedef struct
 {
     int id;
@@ -9,6 +12,7 @@ typedef struct
     char category[20];
 } MenuItem;
 
+//Functions
 void signup();
 void login();
 void menu();
@@ -16,8 +20,9 @@ void takeOrder(MenuItem menu[], int size, const char *category);
 void displayMenu(MenuItem menu[], int size, const char *category);
 void selectCategoryAndOrder(MenuItem menu[], int size);
 void reserveTable();
-void collectFeedback();
+void collectReview();
 
+//Global Variables
 int found1;
 char username[100];
 char name[20];
@@ -26,6 +31,8 @@ int day;
 char month[10];
 int time;
 char am_pm[20];
+
+//Main Functions
 int main()
 {
     system("color f1");
@@ -33,7 +40,7 @@ int main()
     system("cls");
     printf("\t\t_______________\n");
     printf("\t\t|             |\n");
-    printf("\t\t|_A_S_K_Grand_|\n");
+    printf("\t\t|_S_R_K_Grand_|\n");
     printf("\t\t|-------------|\n");
     printf("\t\t|*************|\n");
     printf("\t\t|/////////////|\n");
@@ -44,7 +51,14 @@ int main()
 
     printf("\n\n\t****** WELCOME TO ASK Grand ******\n\n");
     rtn:
-    printf("1. Signup\n2. Login\n3. Exit\nEnter your choice: ");
+    printf("\n\n\t\t+-++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+--\n");
+        printf("\t\t+ \t\t         \t\t\t+\n\t\t+\t\t    MENU\t\t\t");
+        printf("+\n\t\t+\t\t\t\t\t\t+\n\t\t+-++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n");
+        printf("\t\t+\t\t\t\t\t\t+\n\t\t+ \t 1.SIGNUP\t\t\t\t+\n\t\t+\t\t\t\t\t\t+\n");
+        printf("\t\t+\t 2.LOGIN\t\t\t\t+\n\t\t+\t\t\t\t\t\t+\n\t\t");
+        printf("+\t 3.LOGOUT\t\t\t\t+\n\t\t+\t\t\t\t\t\t+\n\t\t");
+        printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+-+-\n\n");
+        printf("\n\n\n\t\tEnter your choice:");
     scanf("%d",&choice1);
 
     switch (choice1)
@@ -73,7 +87,7 @@ int main()
             printf("\n\n\n\tPress Y/y to Start : ");
             char opt;
             fflush(stdin);
-            scanf("%c",&opt);
+            opt=getch();
             if(opt=='y'||opt=='Y')
             {
                 reserveTable();
@@ -87,12 +101,14 @@ int main()
         }
 }
 
+//Sign up Functions
 void signup()
 {
     char password[100];
-    printf("Enter user name:");
+    up:
+    printf("\n\n\t\tEnter user name:");
     scanf("%s", username);
-    FILE *file = fopen("users.csv", "r");
+    FILE *file = fopen("users.csv", "a+");
     if (file == NULL)
     {
         printf("Could not open file.\n");
@@ -104,13 +120,14 @@ void signup()
     {
         if (strcmp(username, file_username) == 0)
         {
-            printf("Username already exists. Please choose a different one.\n");
-            fclose(file);
-            return;
+            printf("\n\n\t\tUsername already exists. Please choose a different one.\n");
+            printf("\n\n\t\t\tPress Enter to Continue ..... ");
+            getch();
+            goto up;
         }
     }
     fclose(file);
-    printf("Enter password: ");
+    printf("\n\t\tEnter password: ");
     scanf("%s", password);
     file = fopen("users.csv", "a");
     if (file == NULL) {
@@ -122,12 +139,13 @@ void signup()
     printf("Signup successful\n");
 }
 
+//Login Function
 void login()
 {
     char password[100], file_username[100], file_password[100];
-    printf("Enter username: ");
+    printf("\n\n\t\tEnter username: ");
     scanf("%s", username);
-    printf("Enter password: ");
+    printf("\n\t\tEnter password: ");
     scanf("%s", password);
 
     FILE *file = fopen("users.csv", "r");
@@ -150,6 +168,7 @@ void login()
 
 }
 
+//Reserve Table Function
 void reserveTable()
 {
 
@@ -192,13 +211,15 @@ void reserveTable()
     printf("\n\tPress Y/y to Order Food : ");
     char opt;
             fflush(stdin);
-            scanf("%c",&opt);
+            opt=getch();
             if(opt=='y'||opt=='Y')
             {
                  menuf();
             }
 
 }
+
+//Menu Function
 void menuf()
 {
     printf("\n\t---Menu---\n");
@@ -247,6 +268,8 @@ void menuf()
 
     selectCategoryAndOrder(menu, menuSize);
 }
+
+//Select Category And Order Function
 void selectCategoryAndOrder(MenuItem menu[], int size)
 {
     int choice;
@@ -284,6 +307,7 @@ void selectCategoryAndOrder(MenuItem menu[], int size)
     }
 }
 
+//Display Menu Function
 void displayMenu(MenuItem menu[], int size, const char *category)
 {
     printf("\n--- %s ---\n", category);
@@ -296,6 +320,7 @@ void displayMenu(MenuItem menu[], int size, const char *category)
     }
 }
 
+//Take Order Function
 void takeOrder(MenuItem menu[], int size, const char *category)
 {
     int choice,quantity;
@@ -330,29 +355,30 @@ void takeOrder(MenuItem menu[], int size, const char *category)
                 break;
             }
         }
-    }fclose(file5);
-        if (!found)
-        {
-            printf("Invalid item number. Please try again.\n");
-            continue;
-        }
-
-
-        printf("\nDo you want to order another item from %s? (y/n): ", category);
-        scanf(" %c", &more);
+    }
+    fclose(file5);
+    if (!found)
+    {
+        printf("Invalid item number. Please try again.\n");
+        continue;
+    }
+    printf("\nDo you want to order another item from %s? (y/n): ", category);
+    more=getch();
 
     }while (more == 'y' || more == 'Y');
+
     printf("\nDo you want to order any another Category(y/n): ");
     char opt;
-        fflush(stdin);
-        scanf("%c",&opt);
-        if(opt=='y'||opt=='Y')
-            {
-                 menuf();
-            }
+
+    fflush(stdin);
+    opt=getch();
+    if(opt=='y'||opt=='Y')
+    {
+        menuf();
+    }
     printf("\n\n");
     char a[15]={'(','L','o','a','d','i','n','g','.','.','.',')'};
-    for(int i =0;i<5;i++)
+    for(int i =0;i<3;i++)
     {
         printf("\r--------------------- )\r");
         for(int j=0;j<=11;j++){
@@ -363,33 +389,114 @@ void takeOrder(MenuItem menu[], int size, const char *category)
     }
 
     printf("\n\nYour total bill for your Order is: %.2f Rs\n", overalltotal);
-    printf("Press Y/y to Feedback about this Services or Press any key to Exit: ");
-        fflush(stdin);
-        scanf("%c",&opt);
-        if(opt=='y'||opt=='Y')
-            {
-                 collectFeedback();
-            }
-            else
-                printf("\n\n\t\tThank You......");
-    exit(0);
-
-}
-
-void collectFeedback()
-{
-    char feedback[500];
-    printf("Enter your feedback: ");
-    scanf(" %[^\n]", feedback);
-    FILE *file = fopen("feedback.txt", "a");
-    if (file == NULL)
+    printf("\n\tPress Y/y to Feedback about this Services or Press any key to Exit: ");
+    fflush(stdin);
+    opt=getch();
+    if(opt=='y'||opt=='Y')
     {
-        printf("Could not open file %s for writing.\n", "feedback");
+        collectReview();
+        printf("\n\n\t\tPress Y/y to View Contact Details : ");
+        fflush(stdin);
+        opt=getch();
+        if(opt=='y'||opt=='Y')
+        {
+            contact_details();
+        }
 
     }
+    else
+    {
+        printf("\n\t\t\tPress Y/y to View Contact Details : ");
+        fflush(stdin);
+        opt=getch();
+        if(opt=='y'||opt=='Y')
+        {
+            contact_details();
+        }
+        exit(0);
+    }
+}
 
-    fprintf(file,"%s\n",feedback);
-    fclose(file);
 
-    printf("Thank you for your feedback!\n");
+//Collect Review function
+void collectReview()
+{
+    char feedback[100];
+    char star[10];
+
+    rating:
+    printf("\n\n\t\tEnter your Rating 1 / 5 ( * / ***** ): ");
+    scanf("%s",star);
+
+    int count_star = strlen(star);
+    int i;
+    for (i = 0; i < count_star; i++) {
+        if (star[i] != '*') {
+            printf("Invalid Input. Please provide a rating from 1 to 5 using asterisks (*).\n");
+            goto rating;
+        }
+    }
+
+    switch (count_star) {
+    case 1:
+        printf("Bad\n");
+        break;
+    case 2:
+        printf("Not bad\n");
+        break;
+    case 3:
+        printf("Good\n");
+        break;
+    case 4:
+        printf("Excellent\n");
+        break;
+    case 5:
+        printf("Marvelous\n");
+        break;
+    default:
+        printf("Invalid Rating\n");
+        goto rating;
+    }
+
+    printf("Enter Your Review: ");
+    scanf(" %[^\n]", feedback);
+
+    FILE* file = fopen("feedback.txt", "a");
+    if (file == NULL) {
+        printf("Could not open file %s for writing.\n", "feedback.txt");
+        return 1;
+    }
+    else {
+        fprintf(file, "Rating: %s (%d/5)\n", star,count_star);
+        fprintf(file, "Review: %s\n\n", feedback);
+        fclose(file);
+        printf("Thank you for your feedback!\n");
+    }
+}
+
+//Contact Details Function
+void contact_details()
+{
+    printf("\n\n\n\n\t\t\t\t\t***THANK YOU FOR VISITING OUR RESTAURANT***\n\nFor more information,contact below: \n");
+    printf("\n\t\tADDRESS:- \n\n\t\t\tSIMRASIM ROCKERS ");
+    printf("\n\t\t\tNo XX, AhXX PiXXXXle, Grdxxx Foxxrx,\n\t\t\tXth Main, Xnd Cross, ");
+    printf("Xth Block\n\t\t\tKoraXXXXXXX Inixxxxxxal Area - XXXXXXXre,\n\t\t\tXXXXXXka - XXX095,\n\t\t\tIndia ");
+    printf("\n\n\t\t\tPhone +91 98 7654 9876\n\n\t\t\tMobile +91 99 7878 6789\n\n\t\t\tEmail : demo12345.in\n\n\n");
+    printf("\n\n\t\t\t\t\t\t*******************\t\t\t\t");
+    FILE *file = fopen("feedback.txt", "r");
+    if (file == NULL)
+    {
+        printf("Could not open file %s for reading.\n", "reserved.csv");
+    }
+    else
+    {
+        printf("\n\n\tReviews : \n\n");
+        char line[256];
+        while (fgets(line, sizeof(line), file))
+        {
+            printf("\t\t%s", line);
+        }
+        fclose(file);
+    }
+
 }
