@@ -31,6 +31,7 @@ int day;
 char month[10];
 int time;
 char am_pm[20];
+char opt;
 
 //Main Functions
 int main()
@@ -77,7 +78,7 @@ int main()
     }
         if (found1)
         {
-            printf("\n\t\t\t\tHello %s...Welcome to ASK Grand.\n\n",username);
+            printf("\n\t\t\t\tHello %s...Welcome to SRK Grand.\n\n",username);
             printf("\t\t\tSteps to reserve table and Ordering Foods........\n\n");
             printf("\t\tStep 1 : Reserve Your Table (Check the Vacancies of Tables and \n\t\t  Reserve the Free Table By Filling some Basic Details)\n");
             printf("\t\tStep 2 : Next Enter Y/y to order the Food\n");
@@ -91,6 +92,9 @@ int main()
             if(opt=='y'||opt=='Y')
             {
                 reserveTable();
+            }
+            else{
+                 get_Feedback();
             }
         }
     else
@@ -216,6 +220,10 @@ void reserveTable()
             {
                  menuf();
             }
+            else{
+                 get_Feedback();
+            }
+
 
 }
 
@@ -389,32 +397,7 @@ void takeOrder(MenuItem menu[], int size, const char *category)
     }
 
     printf("\n\nYour total bill for your Order is: %.2f Rs\n", overalltotal);
-    printf("\n\tPress Y/y to Feedback about this Services or Press any key to Exit: ");
-    fflush(stdin);
-    opt=getch();
-    if(opt=='y'||opt=='Y')
-    {
-        collectReview();
-        printf("\n\n\t\tPress Y/y to View Contact Details : ");
-        fflush(stdin);
-        opt=getch();
-        if(opt=='y'||opt=='Y')
-        {
-            contact_details();
-        }
-
-    }
-    else
-    {
-        printf("\n\t\t\tPress Y/y to View Contact Details : ");
-        fflush(stdin);
-        opt=getch();
-        if(opt=='y'||opt=='Y')
-        {
-            contact_details();
-        }
-        exit(0);
-    }
+    get_Feedback();
 }
 
 
@@ -472,6 +455,37 @@ void collectReview()
         fclose(file);
         printf("Thank you for your feedback!\n");
     }
+}
+
+void get_Feedback()
+{
+            printf("\n\tPress Y/y to Feedback about this Services or Press any key to Exit: ");
+            fflush(stdin);
+            opt=getch();
+            if(opt=='y'||opt=='Y')
+            {
+                collectReview();
+                printf("\n\n\t\tPress Y/y to View Contact Details : ");
+                fflush(stdin);
+                opt=getch();
+                if(opt=='y'||opt=='Y')
+                {
+                    contact_details();
+                }
+
+            }
+            else
+            {
+                printf("\n\t\t\tPress Y/y to View Contact Details : ");
+                fflush(stdin);
+                opt=getch();
+                if(opt=='y'||opt=='Y')
+                {
+                    contact_details();
+                }
+
+            }
+            exit(0);
 }
 
 //Contact Details Function
