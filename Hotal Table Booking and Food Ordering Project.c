@@ -39,7 +39,7 @@ char opt;
 //Main Functions
 int main()
 {
-    system("color f1");
+    system("color 06");
     int choice1,choice2;
     system("cls");
     printf("\t\t_______________\n");
