@@ -1,26 +1,39 @@
-# Hotal-Table-Booking-and-Food-Ordering-Project
-This C program manages restaurant tasks: signup/login, table reservation, menu browsing/ordering, feedback collection. It stores data in CSV and text files for user authentication, reservation, orders, and reviews. Simple CLI interface aids usability.
-**Restaurant Management System**
+<h1 align="center">SRK Grand Restaurant Management System</h1>
 
-This repository contains a C program for managing restaurant operations efficiently. The system offers functionalities such as user authentication, table reservation, menu browsing, order processing, and feedback collection. Built with simplicity and usability in mind, it utilizes file I/O operations for data storage and retrieval.
+<p align="center">
+  <img src="https://i.ibb.co/XsjN1RK/Whats-App-Image-2024-05-29-at-9-40-37-AM.jpg" alt="Whats-App-Image-2024-05-29-at-9-40-37-AM" border="50"></a>
+</p>
 
-**Features:**
+<p align="center">Welcome to SRK Grand! This C program manages various operations for our restaurant, including user authentication, table reservation, menu browsing and ordering, and feedback collection. It aims to streamline restaurant operations and enhance customer experience.</p>
+
+## 🌟 Features:
+
 - **User Authentication:** Secure signup/login system ensures user privacy and access control.
 - **Table Reservation:** Users can reserve tables conveniently by providing necessary details like name, preferred table number, date, and time.
-- **Menu Management:** The system categorizes menu items for easy browsing and ordering.
-- **Order Processing:** Efficient order placement and calculation of total bill streamline restaurant operations.
-- **Feedback Collection:** Customers can provide ratings and reviews based on their dining experience, facilitating continuous improvement.
+- **Menu Browsing and Ordering:** Customers can browse through our menu categorized into starters, main course, drinks, and desserts, and place their orders seamlessly.
+- **Feedback Collection:** Customers can provide ratings and reviews based on their dining experience, helping us improve our services continually.
 
-**Usage:**
+## 🚀 Usage:
+
 1. **Compilation:** Compile the program using a compatible C compiler.
 2. **Execution:** Run the executable file to access the system.
 3. **Navigation:** Follow on-screen prompts for signup, login, table reservation, menu browsing, ordering, and feedback submission.
 
-**Contributing:**
+## 🎨 Contributing:
+
 Contributions are welcome! Feel free to submit bug reports, feature requests, or pull requests to enhance the functionality and usability of the system.
 
-**License:**
-This project is licensed under the [MIT License](LICENSE), granting permissions for commercial and non-commercial use, modification, distribution, and sublicense.
+## 📝 License:
 
-**Disclaimer:**
-This project is developed for educational purposes and may require further enhancements for practical deployment in real-world restaurant environments. Use it at your own discretion.
+This project is licensed under the MIT License, granting permissions for commercial and non-commercial use, modification, distribution, and sublicense.
+
+## 📞 Contact Us:
+
+For more information, contact us at:
+
+- **Address:** SIMRASIM ROCKERS, No XX, AhXX PiXXXXle, Grdxxx Foxxrx, Xth Main, Xnd Cross, Xth Block, Koramangala Initial Area, Bangalore - 560095, India.
+- **Phone:** +91 98 7654 9876
+- **Mobile:** +91 99 7878 6789
+- **Email:** demo12345.in
+
+Thank you for visiting SRK Grand! Enjoy your dining experience! 🍽️
